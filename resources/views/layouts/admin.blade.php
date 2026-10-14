@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Portal') - Swad Desi Control Center</title>
+    <title>@yield('title', 'Admin Portal') - AchaarG Control Center</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +48,7 @@
                 <i class="fa-solid fa-jar text-lg"></i>
             </div>
             <div>
-                <h1 class="font-bold text-white text-base tracking-tight leading-none">Swad Desi</h1>
+                <h1 class="font-bold text-white text-base tracking-tight leading-none">AchaarG</h1>
                 <span class="text-[10px] text-amber-400 font-semibold uppercase tracking-wider">Store Admin</span>
             </div>
         </div>

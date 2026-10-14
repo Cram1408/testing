@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Browse Authentic Pickles & Mukhwas - Swad Desi')
+@section('title', 'Browse Authentic Pickles & Mukhwas - AchaarG')
 
 @section('content')
 <div class="bg-gradient-to-b from-[#FFFBEB]/40 to-[#FDFBF7] py-8 border-b border-amber-200/40">

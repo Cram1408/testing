@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -65,7 +66,8 @@ class ProductController extends Controller
 
         $slug = !empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
 
-        $imagePath = 'images/products/mango_pickle.png';
+        // Store uploaded image; leave null when no file is provided
+        $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
         }
@@ -143,8 +145,13 @@ class ProductController extends Controller
 
         $slug = !empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
 
+        // Update image only when a new file is uploaded; delete the old one to avoid orphans
         $imagePath = $product->image;
         if ($request->hasFile('image')) {
+            // Delete previous image from storage (only if it was a stored file, not a legacy path)
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
             $imagePath = $request->file('image')->store('products', 'public');
         }
 

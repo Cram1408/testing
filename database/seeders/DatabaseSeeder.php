@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Seed Users (Idempotent)
         $admin = User::firstOrCreate(
-            ['email' => 'admin@pickles.com'],
+            ['email' => 'adminram14@achaarg.com'],
             [
                 'name' => 'Store Administrator',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('adminR1a2m3p4@'),
                 'role' => 'admin',
                 'phone' => '+91 98765 43210',
                 'address' => 'Shop 12, Spice Market, Old Heritage Quarter',

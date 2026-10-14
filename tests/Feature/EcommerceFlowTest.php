@@ -15,7 +15,7 @@ class EcommerceFlowTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('Swad Desi');
+        $response->assertSee('AchaarG');
 
         $shopResponse = $this->get('/shop');
         $shopResponse->assertStatus(200);

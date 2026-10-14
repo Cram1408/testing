@@ -22,7 +22,7 @@ class CustomerAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -35,7 +35,8 @@ class CustomerAuthController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            return redirect()->intended(route('customer.dashboard'))->with('success', 'Welcome back, ' . Auth::user()->name . '!');
+            return redirect()->intended(route('customer.dashboard'))
+                ->with('success', 'Welcome back, ' . Auth::user()->name . '!');
         }
 
         return back()->withInput($request->only('email'))->withErrors([
@@ -54,32 +55,47 @@ class CustomerAuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email|max:100',
-            'password' => 'required|string|min:6|confirmed',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:100',
+            'name'        => 'required|string|max:100',
+            'email'       => 'required|email|unique:users,email|max:100',
+            'password'    => 'required|string|min:6|confirmed',
+            'phone'       => ['required', 'regex:/^[6-9]\d{9}$/', 'max:15'],
+            'address'     => 'nullable|string|max:255',
+            'city'        => 'nullable|string|max:100',
+            'state'       => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:10',
+        ], [
+            'phone.required' => 'Mobile number is required.',
+            'phone.regex'    => 'Enter a valid 10-digit Indian mobile number (starting with 6–9).',
         ]);
 
+        // Ensure the mobile number was OTP-verified in this session
+        $sessionKey = "otp_verified_registration_{$validated['phone']}";
+        if (! $request->session()->get($sessionKey)) {
+            return back()->withInput()->withErrors([
+                'phone' => 'Please verify your mobile number with OTP before creating an account.',
+            ]);
+        }
+
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => 'customer',
-            'phone' => $validated['phone'] ?? null,
-            'address' => $validated['address'] ?? null,
-            'city' => $validated['city'] ?? null,
-            'state' => $validated['state'] ?? null,
+            'name'        => $validated['name'],
+            'email'       => $validated['email'],
+            'password'    => Hash::make($validated['password']),
+            'role'        => 'customer',
+            'phone'       => $validated['phone'],
+            'address'     => $validated['address'] ?? null,
+            'city'        => $validated['city'] ?? null,
+            'state'       => $validated['state'] ?? null,
             'postal_code' => $validated['postal_code'] ?? null,
         ]);
+
+        // Consume the session flag so it cannot be replayed
+        $request->session()->forget($sessionKey);
 
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('customer.dashboard')->with('success', 'Your account has been created successfully!');
+        return redirect()->route('customer.dashboard')
+            ->with('success', 'Your account has been created successfully!');
     }
 
     public function logout(Request $request)

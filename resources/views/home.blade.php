@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Swad Desi - Authentic Homemade Pickles & Royal Mukhwas')
+@section('title', 'AchaarG - Authentic Homemade Pickles & Royal Mukhwas')
 
 @section('content')
 <!-- Hero Section -->
@@ -247,7 +247,7 @@
             </div>
 
             <div class="lg:col-span-6 space-y-6">
-                <span class="text-xs uppercase font-extrabold tracking-widest text-amber-800">The Swad Desi Story</span>
+                <span class="text-xs uppercase font-extrabold tracking-widest text-amber-800">The AchaarG Story</span>
                 <h2 class="font-serif-heading text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
                     Preserving Ancient Earthenware Recipes For Modern Homes
                 </h2>
@@ -255,7 +255,7 @@
                     Long before commercial factory pickles were made with synthetic vinegars and artificial colours, every Indian family cherished grandmother's earthen jars placed under the scorching summer sun on rooftop terraces.
                 </p>
                 <p class="text-sm text-slate-600 leading-relaxed">
-                    At Swad Desi, we honor that sacred culinary ritual. We source raw mangoes directly from local farms, cold-press fresh black mustard seeds for our oil, and grind whole cumin, fenugreek, and ajwain on traditional stone mills.
+                    At AchaarG, we honor that sacred culinary ritual. We source raw mangoes directly from local farms, cold-press fresh black mustard seeds for our oil, and grind whole cumin, fenugreek, and ajwain on traditional stone mills.
                 </p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">

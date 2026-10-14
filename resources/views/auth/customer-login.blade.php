@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In - Swad Desi')
+@section('title', 'Sign In - AchaarG')
 
 @section('content')
 <div class="max-w-md mx-auto px-4 py-16">
@@ -17,15 +17,23 @@
             @csrf
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
-                <input type="email" name="email" required value="{{ old('email') }}" placeholder="aarav@example.com"
+                <input type="email" name="email" required value="{{ old('email') }}" placeholder="Enter your email"
                     class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
                 @error('email') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
-                <input type="password" name="password" required placeholder="••••••••"
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <div class="relative">
+                    <input type="password" name="password" id="customerPassword" required placeholder="Enter your password"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 pr-10 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <button type="button" id="toggleCustomerPassword"
+                        onclick="toggleCustomerPwd()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-700 transition-colors focus:outline-none"
+                        aria-label="Toggle password visibility">
+                        <i id="toggleCustomerPwdIcon" class="fa-solid fa-eye text-xs"></i>
+                    </button>
+                </div>
                 @error('password') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
             </div>
 
@@ -46,9 +54,22 @@
             <a href="{{ route('register') }}" class="font-bold text-amber-800 hover:underline ml-1">Create one here</a>
         </div>
 
-        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-[11px] text-amber-900 text-center">
+        {{-- <div class="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-[11px] text-amber-900 text-center">
             <span class="font-bold">Demo Customer:</span> customer@pickles.com | Password: password
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function toggleCustomerPwd() {
+        const input = document.getElementById('customerPassword');
+        const icon  = document.getElementById('toggleCustomerPwdIcon');
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        icon.classList.toggle('fa-eye',       !isHidden);
+        icon.classList.toggle('fa-eye-slash',  isHidden);
+    }
+</script>
+@endpush

@@ -79,13 +79,38 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Product Photo</label>
-                    @if($product->image)
-                        <div class="mb-2 flex items-center gap-3">
-                            <img src="{{ asset($product->image) }}" class="w-12 h-12 rounded-xl object-cover border border-slate-200">
-                            <span class="text-[10px] text-slate-500">Current Photo</span>
+
+                    {{-- Current photo / placeholder --}}
+                    <div class="mb-3 flex items-center gap-3">
+                        @if($product->image)
+                            <img id="currentProductImg"
+                                 src="{{ asset('storage/' . $product->image) }}"
+                                 class="w-16 h-16 rounded-xl object-cover border border-slate-200 shadow-sm"
+                                 onerror="this.style.display='none'; document.getElementById('noImgPlaceholder').style.display='flex';">
+                        @endif
+
+                        {{-- Black placeholder shown when no image or image fails to load --}}
+                        <div id="noImgPlaceholder"
+                             class="w-16 h-16 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-700 shadow-sm shrink-0"
+                             style="{{ $product->image ? 'display:none' : 'display:flex' }}">
+                            <i class="fa-solid fa-image text-slate-600 text-lg"></i>
                         </div>
-                    @endif
-                    <input type="file" name="image" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-600">
+
+                        <div>
+                            <p class="text-[11px] font-semibold text-slate-600">Current Photo</p>
+                            @if($product->image)
+                                <p class="text-[10px] text-slate-400 mt-0.5 break-all">{{ basename($product->image) }}</p>
+                            @else
+                                <p class="text-[10px] text-slate-400 mt-0.5 italic">No image uploaded</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- File input with live preview --}}
+                    <input type="file" name="image" id="productImageInput" accept="image/*"
+                           onchange="previewProductImage(event)"
+                           class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-600 cursor-pointer">
+                    @error('image') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
 
@@ -227,6 +252,31 @@
         document.querySelectorAll('input[id^="is_default_"]').forEach(el => el.value = "0");
         const target = document.getElementById('is_default_' + idx);
         if (target) target.value = "1";
+    }
+
+    function previewProductImage(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            // Show/update the current image element
+            let img = document.getElementById('currentProductImg');
+            const placeholder = document.getElementById('noImgPlaceholder');
+
+            if (!img) {
+                // Image element doesn't exist yet (product had no image) — create it
+                img = document.createElement('img');
+                img.id = 'currentProductImg';
+                img.className = 'w-16 h-16 rounded-xl object-cover border border-slate-200 shadow-sm';
+                placeholder.parentNode.insertBefore(img, placeholder);
+            }
+
+            img.src = e.target.result;
+            img.style.display = 'block';
+            placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
     }
 </script>
 @endpush

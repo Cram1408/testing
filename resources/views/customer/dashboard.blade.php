@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Account & Orders - Swad Desi')
+@section('title', 'My Account & Orders - AchaarG')
 
 @section('content')
 <div class="bg-amber-50/50 py-6 border-b border-amber-200/40">

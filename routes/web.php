@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerAccountController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderTrackingController;
+use App\Http\Controllers\OtpController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,10 @@ Route::post('/login', [CustomerAuthController::class, 'login']);
 Route::get('/register', [CustomerAuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [CustomerAuthController::class, 'register']);
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('logout');
+
+// OTP Routes (AJAX)
+Route::post('/otp/send', [OtpController::class, 'send'])->name('otp.send');
+Route::post('/otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
 
 // Customer Dashboard
 Route::middleware('auth')->group(function () {

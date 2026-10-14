@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Invoice #{{ $order->order_number }} - Swad Desi</title>
+    <title>Invoice #{{ $order->order_number }} - AchaarG</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -28,7 +28,7 @@
         <!-- Invoice Header -->
         <div class="flex items-start justify-between border-b border-slate-200 pb-6">
             <div>
-                <h1 class="text-2xl font-extrabold text-amber-950">Swad Desi</h1>
+                <h1 class="text-2xl font-extrabold text-amber-950">AchaarG</h1>
                 <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mt-0.5">Handcrafted Pickles & Royal Mukhwas</p>
                 <div class="text-[11px] text-slate-500 mt-2 space-y-0.5">
                     <p>Shop 12, Spice Market, Old Heritage Quarter</p>
@@ -124,7 +124,7 @@
 
         <!-- Footer Signoff -->
         <div class="mt-12 pt-6 border-t border-slate-200 text-center text-[10px] text-slate-400">
-            <p>Thank you for choosing Swad Desi authentic handcrafted food traditions!</p>
+            <p>Thank you for choosing AchaarG authentic handcrafted food traditions!</p>
             <p class="mt-0.5">This is a computer-generated tax invoice. For queries, contact care@swaddesi.com</p>
         </div>
 

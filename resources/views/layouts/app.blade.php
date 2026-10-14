@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Swad Desi - Authentic Homemade Pickles & Royal Mukhwas')</title>
+    <title>@yield('title', 'AchaarG - Authentic Homemade Pickles & Royal Mukhwas')</title>
     <meta name="description" content="@yield('meta_description', 'Handcrafted traditional Indian pickles cured in cold-pressed mustard oil and royal artisanal mouth fresheners prepared with heirloom recipes.')">
 
     <!-- Fonts -->
@@ -125,7 +125,7 @@
                         </div>
                         <div class="flex flex-col">
                             <span class="font-serif-heading text-2xl font-bold tracking-tight text-amber-950 group-hover:text-amber-700 transition-colors leading-tight">
-                                Swad Desi
+                                AchaarG
                             </span>
                             <span class="text-[10px] tracking-widest uppercase font-semibold text-amber-700">
                                 Pickles & Mukhwas
@@ -200,11 +200,13 @@
                                     </button>
                                 </form>
                             </div>
-                        @else
-                            <a href="{{ route('login') }}" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-amber-700 hover:bg-amber-50 rounded-xl transition-colors border border-amber-200/60 bg-amber-50/40">
-                                <i class="fa-regular fa-user text-sm"></i>
-                                <span class="hidden sm:inline">Sign In</span>
-                            </a>
+                            @else
+                            <a href="{{ route('login') }}"
+                            aria-label="Sign In"
+                            title="Sign In"
+                            class="flex items-center justify-center w-10 h-10 text-slate-700 hover:text-amber-700 hover:bg-amber-50 rounded-xl transition-colors border border-amber-200/60 bg-amber-50/40">
+                            <i class="fa-regular fa-user text-lg"></i>
+                        </a>
                         @endauth
                     </div>
 
@@ -405,7 +407,7 @@
                             <i class="fa-solid fa-jar text-xl"></i>
                         </div>
                         <span class="font-serif-heading text-2xl font-bold tracking-tight text-white">
-                            Swad Desi
+                            AchaarG
                         </span>
                     </div>
                     <p class="text-xs text-amber-200/70 leading-relaxed max-w-sm">
@@ -470,7 +472,7 @@
 
             <!-- Footer Bottom -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-amber-300/60">
-                <p>© {{ date('Y') }} Swad Desi Indian Pickles & Mukhwas. All rights reserved.</p>
+                <p>© {{ date('Y') }} AchaarG Indian Pickles & Mukhwas. All rights reserved.</p>
                 <div class="flex items-center gap-4">
                     <span>Safe & Secure Payments</span>
                     <span class="text-amber-400/70"><i class="fa-brands fa-cc-visa text-base"></i></span>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Login - Swad Desi</title>
+    <title>Admin Login - AchaarG</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +16,7 @@
                 <i class="fa-solid fa-jar"></i>
             </div>
             <h1 class="text-2xl font-bold tracking-tight text-white">Admin Control Portal</h1>
-            <p class="text-xs text-slate-400">Swad Desi Pickles & Mukhwas Operations</p>
+            <p class="text-xs text-slate-400">AchaarG Pickles & Mukhwas Operations</p>
         </div>
 
         @if(session('error'))
@@ -38,8 +38,10 @@
             <div>
                 <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Admin Email</label>
                 <div class="relative">
-                    <input type="email" name="email" required value="{{ old('email', 'admin@pickles.com') }}" 
-                        class="w-full bg-slate-950 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    <input type="email" name="email" required
+                    value="{{ old('email') }}"
+                    placeholder="Enter your email"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
                     <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
                 </div>
                 @error('email') <p class="text-rose-400 text-[11px] mt-1">{{ $message }}</p> @enderror
@@ -48,9 +50,17 @@
             <div>
                 <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
                 <div class="relative">
-                    <input type="password" name="password" required value="password" 
-                        class="w-full bg-slate-950 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                    <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+                   <input type="password" name="password" id="adminPassword" required
+                   placeholder="Enter your password"
+                   autocomplete="current-password"
+                   class="w-full bg-slate-950 border border-slate-700 rounded-xl py-3 pl-10 pr-10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                   <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+                   <button type="button" id="togglePassword"
+                       onclick="toggleAdminPassword()"
+                       class="absolute right-3.5 top-3 text-slate-500 hover:text-amber-400 transition-colors focus:outline-none"
+                       aria-label="Toggle password visibility">
+                       <i id="togglePasswordIcon" class="fa-solid fa-eye text-xs"></i>
+                   </button>
                 </div>
                 @error('password') <p class="text-rose-400 text-[11px] mt-1">{{ $message }}</p> @enderror
             </div>
@@ -67,10 +77,10 @@
             </button>
         </form>
 
-        <div class="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-center text-xs text-slate-400 space-y-1">
+        {{-- <div class="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 text-center text-xs text-slate-400 space-y-1">
             <p class="font-bold text-slate-300">Default Superadmin Credentials:</p>
             <p class="font-mono text-amber-400 text-[11px]">admin@pickles.com / password</p>
-        </div>
+        </div> --}}
 
         <div class="text-center">
             <a href="{{ route('home') }}" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors">
@@ -78,5 +88,15 @@
             </a>
         </div>
     </div>
+<script>
+    function toggleAdminPassword() {
+        const input = document.getElementById('adminPassword');
+        const icon  = document.getElementById('togglePasswordIcon');
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        icon.classList.toggle('fa-eye',       !isHidden);
+        icon.classList.toggle('fa-eye-slash',  isHidden);
+    }
+</script>
 </body>
 </html>
