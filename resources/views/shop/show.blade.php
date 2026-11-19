@@ -27,7 +27,7 @@
         <!-- Product Image Preview -->
         <div class="lg:col-span-5 space-y-4">
             <div class="relative bg-white rounded-3xl p-4 border border-amber-100 shadow-md overflow-hidden group">
-                <img id="mainProductImg" src="{{ asset($product->image ?? 'images/products/mango_pickle.png') }}" alt="{{ $product->name }}" class="w-full h-[420px] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">
+                <img id="mainProductImg" src="{{ asset($product->image ?? 'images/products/mango_pickle.png') }}" onerror="this.onerror=null;this.src='{{ asset('images/products/mango_pickle.png') }}';" alt="{{ $product->name }}" class="w-full h-[420px] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">
                 
                 @if($product->spice_level)
                     <div class="absolute top-8 left-8">

@@ -7,16 +7,26 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <div>
             <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
-                <a href="{{ route('customer.dashboard') }}" class="hover:text-amber-800">My Account</a>
+                <a href="{{ route('customer.orders') }}" class="hover:text-amber-800">My Orders</a>
                 <span>/</span>
-                <span>Orders</span>
+                <span class="font-mono text-slate-700">#{{ $order->order_number }}</span>
             </div>
             <h1 class="font-serif-heading text-2xl font-bold text-slate-900">Order #{{ $order->order_number }}</h1>
         </div>
-        <a href="{{ route('orders.track.index', ['order_number' => $order->order_number]) }}" class="px-4 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs transition-colors flex items-center gap-2">
-            <i class="fa-solid fa-map-location-dot"></i>
-            <span>Track Live</span>
-        </a>
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{{ route('customer.orders.invoice', ['orderNumber' => $order->order_number, 'download' => 1]) }}" class="px-3.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs transition-colors flex items-center gap-1.5 shadow-xs">
+                <i class="fa-solid fa-file-arrow-down text-amber-800"></i>
+                <span>Download Invoice</span>
+            </a>
+            <a href="{{ route('customer.orders.invoice', ['orderNumber' => $order->order_number, 'print' => 1]) }}" target="_blank" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs transition-colors flex items-center gap-1.5 shadow-xs">
+                <i class="fa-solid fa-print text-amber-700"></i>
+                <span>Print Invoice</span>
+            </a>
+            <a href="{{ route('orders.track.index', ['order_number' => $order->order_number]) }}" class="px-3.5 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs transition-colors flex items-center gap-1.5 shadow-xs">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>Track Live</span>
+            </a>
+        </div>
     </div>
 </div>
 

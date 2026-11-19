@@ -35,6 +35,13 @@ class AuthController extends Controller
                 ]);
             }
 
+            if ($user->is_deactivated) {
+                Auth::logout();
+                return back()->withInput($request->only('email'))->withErrors([
+                    'email' => 'This administrator account has been deactivated. Please contact the Super Admin.',
+                ]);
+            }
+
             $request->session()->regenerate();
             return redirect()->intended(route('admin.dashboard'))->with('success', 'Welcome to Store Admin Portal!');
         }

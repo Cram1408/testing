@@ -54,7 +54,7 @@
                     </p>
                     <p class="flex items-center gap-3">
                         <i class="fa-solid fa-envelope text-amber-700"></i>
-                        <span>care@swaddesi.com / hello@pickles.com</span>
+                        <span>care@achaarg.com / hello@pickles.com</span>
                     </p>
                     <p class="flex items-center gap-3">
                         <i class="fa-solid fa-clock text-amber-700"></i>

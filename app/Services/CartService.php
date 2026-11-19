@@ -152,10 +152,13 @@ class CartService
     public function getShippingFee(): float
     {
         $subtotal = $this->getSubtotal();
-        if ($subtotal <= 0 || $subtotal >= self::FREE_SHIPPING_THRESHOLD) {
+        $freeThreshold = (float) SettingService::get('free_shipping_min', self::FREE_SHIPPING_THRESHOLD);
+        $standardFee = (float) SettingService::get('standard_shipping_fee', self::STANDARD_SHIPPING_FEE);
+
+        if ($subtotal <= 0 || $subtotal >= $freeThreshold) {
             return 0.00;
         }
-        return self::STANDARD_SHIPPING_FEE;
+        return $standardFee;
     }
 
     /**

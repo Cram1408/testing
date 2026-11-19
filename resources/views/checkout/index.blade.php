@@ -33,6 +33,9 @@
                             <input type="text" name="customer_name" required 
                                 value="{{ old('customer_name', $user->name ?? '') }}" 
                                 placeholder="e.g. Aarav Sharma" 
+                                pattern="^[A-Za-z\s]+$"
+                                title="Only alphabetic characters and spaces allowed"
+                                oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
                             @error('customer_name') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                         </div>
@@ -47,10 +50,15 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mobile Phone *</label>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mobile Phone (10 digits) *</label>
                             <input type="tel" name="customer_phone" required 
                                 value="{{ old('customer_phone', $user->phone ?? '') }}" 
-                                placeholder="e.g. +91 98765 43210" 
+                                placeholder="10-digit mobile number" 
+                                maxlength="10"
+                                inputmode="numeric"
+                                pattern="^[6-9]\d{9}$"
+                                title="Must be a valid 10-digit Indian mobile number"
+                                oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
                             @error('customer_phone') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                         </div>
@@ -69,6 +77,9 @@
                             <input type="text" name="city" required 
                                 value="{{ old('city', $user->city ?? '') }}" 
                                 placeholder="e.g. Mumbai" 
+                                pattern="^[A-Za-z\s]+$"
+                                title="Only alphabetic characters and spaces allowed"
+                                oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
                             @error('city') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                         </div>
@@ -78,15 +89,23 @@
                             <input type="text" name="state" required 
                                 value="{{ old('state', $user->state ?? '') }}" 
                                 placeholder="e.g. Maharashtra" 
+                                pattern="^[A-Za-z\s]+$"
+                                title="Only alphabetic characters and spaces allowed"
+                                oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
                             @error('state') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">PIN Code / Postal Code *</label>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">PIN Code (6 digits) *</label>
                             <input type="text" name="postal_code" required 
                                 value="{{ old('postal_code', $user->postal_code ?? '') }}" 
                                 placeholder="e.g. 400053" 
+                                maxlength="6"
+                                inputmode="numeric"
+                                pattern="^\d{6}$"
+                                title="Must be exactly 6 digits"
+                                oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6)"
                                 class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500">
                             @error('postal_code') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                         </div>

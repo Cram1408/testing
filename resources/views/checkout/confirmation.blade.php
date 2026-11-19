@@ -37,14 +37,18 @@
 
         <!-- Action CTAs -->
         <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="{{ route('orders.track.index', ['order_number' => $order->order_number]) }}" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+            <a href="{{ route('orders.track.index', ['order_number' => $order->order_number]) }}" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
                 <i class="fa-solid fa-map-location-dot"></i>
                 <span>Track Live Delivery Status</span>
             </a>
-            <button onclick="window.print()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs transition-all flex items-center justify-center gap-2">
-                <i class="fa-solid fa-print"></i>
+            <a href="{{ route('order.invoice', ['orderNumber' => $order->order_number, 'download' => 1]) }}" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-file-arrow-down text-amber-800"></i>
+                <span>Download Invoice</span>
+            </a>
+            <a href="{{ route('order.invoice', ['orderNumber' => $order->order_number, 'print' => 1]) }}" target="_blank" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-xs transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-print text-amber-700"></i>
                 <span>Print Invoice</span>
-            </button>
+            </a>
         </div>
     </div>
 

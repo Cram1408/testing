@@ -21,6 +21,11 @@ class AdminMiddleware
             return redirect()->route('home')->with('error', 'Unauthorized. Administrator access required.');
         }
 
+        if (auth()->user()->is_deactivated) {
+            auth()->logout();
+            return redirect()->route('admin.login')->with('error', 'Your account has been deactivated. Please contact the Super Admin.');
+        }
+
         return $next($request);
     }
 }

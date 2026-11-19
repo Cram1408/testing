@@ -31,6 +31,13 @@ class CustomerAuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
+            if (Auth::user()->is_deactivated) {
+                Auth::logout();
+                return back()->withInput($request->only('email'))->withErrors([
+                    'email' => 'Your account has been deactivated. Please contact customer support.',
+                ]);
+            }
+
             if (Auth::user()->isAdmin()) {
                 return redirect()->intended(route('admin.dashboard'));
             }
@@ -55,17 +62,56 @@ class CustomerAuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name'        => 'required|string|max:100',
+            'name'        => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
             'email'       => 'required|email|unique:users,email|max:100',
             'password'    => 'required|string|min:6|confirmed',
-            'phone'       => ['required', 'regex:/^[6-9]\d{9}$/', 'max:15'],
+            'phone'       => [
+                'required',
+                'digits:10',
+                'regex:/^[6-9]\d{9}$/',
+            ],
             'address'     => 'nullable|string|max:255',
-            'city'        => 'nullable|string|max:100',
-            'state'       => 'nullable|string|max:100',
-            'postal_code' => 'nullable|string|max:10',
+            'city'        => [
+                'nullable',
+                'string',
+                'max:100',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+            'state'       => [
+                'nullable',
+                'string',
+                'max:100',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+            'postal_code' => [
+                'nullable',
+                'digits:6',
+                'regex:/^\d{6}$/',
+            ],
+            'avatar' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,webp',
+                'max:2048',
+            ],
         ], [
+            'name.required' => 'Full name is required.',
+            'name.regex' => 'Full name may only contain alphabetic characters and spaces. Numbers and special characters are not allowed.',
             'phone.required' => 'Mobile number is required.',
-            'phone.regex'    => 'Enter a valid 10-digit Indian mobile number (starting with 6–9).',
+            'phone.digits' => 'Mobile number must contain exactly 10 digits.',
+            'phone.regex' => 'Enter a valid 10-digit Indian mobile number (starting with 6–9) without alphabets or special characters.',
+            'city.regex' => 'City may only contain alphabetic characters and spaces. Numbers and special characters are not allowed.',
+            'state.regex' => 'State may only contain alphabetic characters and spaces. Numbers and special characters are not allowed.',
+            'postal_code.digits' => 'PIN code must contain exactly 6 digits.',
+            'postal_code.regex' => 'PIN code must contain exactly 6 digits without any alphabets or special characters.',
+            'avatar.image' => 'The profile picture must be an image file.',
+            'avatar.mimes' => 'The profile picture must be a JPG, PNG, or WEBP image.',
+            'avatar.max' => 'The profile picture size must not exceed 2MB.',
         ]);
 
         // Ensure the mobile number was OTP-verified in this session
@@ -76,12 +122,18 @@ class CustomerAuthController extends Controller
             ]);
         }
 
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        }
+
         $user = User::create([
             'name'        => $validated['name'],
             'email'       => $validated['email'],
             'password'    => Hash::make($validated['password']),
             'role'        => 'customer',
             'phone'       => $validated['phone'],
+            'avatar'      => $avatarPath,
             'address'     => $validated['address'] ?? null,
             'city'        => $validated['city'] ?? null,
             'state'       => $validated['state'] ?? null,

@@ -92,25 +92,34 @@
 <body class="flex flex-col min-h-screen text-slate-800 antialiased selection:bg-amber-500 selection:text-white">
 
     <!-- Top Announcement Bar -->
+    @php
+        $announcementActive = \App\Services\SettingService::get('announcement_active', true);
+        $announcementBadge  = \App\Services\SettingService::get('announcement_badge', "Dadi's Secret");
+        $announcementText   = \App\Services\SettingService::get('announcement_text', "Sun-Dried Pickles in Kachi Ghani Mustard Oil & Royal Digestive Mukhwas");
+        $freeShippingMin    = \App\Services\SettingService::get('free_shipping_min', 499);
+        $supportPhone       = \App\Services\SettingService::get('support_phone', '+91 98765 43210');
+    @endphp
+    @if($announcementActive)
     <div class="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-amber-100 text-xs py-2 px-4 shadow-sm border-b border-amber-600/30">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 text-center sm:text-left">
             <div class="flex items-center gap-2 font-medium">
-                <span class="inline-block px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] uppercase tracking-wider font-bold border border-amber-400/30">Dadi's Secret</span>
-                <span>Sun-Dried Pickles in Kachi Ghani Mustard Oil & Royal Digestive Mukhwas</span>
+                <span class="inline-block px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] uppercase tracking-wider font-bold border border-amber-400/30">{{ $announcementBadge }}</span>
+                <span>{{ $announcementText }}</span>
             </div>
             <div class="flex items-center gap-4 text-xs">
-                <span class="hidden md:inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-amber-300"></i> Free Delivery above ₹499</span>
+                <span class="hidden md:inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-amber-300"></i> Free Delivery above ₹{{ $freeShippingMin }}</span>
                 <span class="hidden md:inline-block text-amber-500/60">•</span>
                 <a href="{{ route('orders.track.index') }}" class="hover:text-amber-300 transition-colors flex items-center gap-1 underline underline-offset-2">
                     <i class="fa-solid fa-map-location-dot"></i> Track Order
                 </a>
                 <span class="text-amber-500/60">•</span>
-                <a href="tel:+919876543210" class="hover:text-amber-300 transition-colors flex items-center gap-1 font-semibold">
-                    <i class="fa-solid fa-phone text-[10px]"></i> +91 98765 43210
+                <a href="tel:{{ preg_replace('/[^\d+]/', '', $supportPhone) }}" class="hover:text-amber-300 transition-colors flex items-center gap-1 font-semibold">
+                    <i class="fa-solid fa-phone text-[10px]"></i> {{ $supportPhone }}
                 </a>
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Main Navigation Header -->
     <header class="sticky top-0 z-40 bg-[#FFFDF9]/95 backdrop-blur-md border-b border-amber-200/50 shadow-sm transition-all duration-200">
@@ -148,9 +157,9 @@
                     <a href="{{ route('shop.category', 'royal-mukhwas') }}" class="px-3.5 py-2 rounded-lg hover:text-amber-700 hover:bg-amber-50 transition-colors {{ request('category') === 'royal-mukhwas' ? 'text-amber-700 bg-amber-50 font-bold' : '' }}">
                         Royal Mukhwas
                     </a>
-                    <a href="{{ route('shop.category', 'sweet-pickles-murabba') }}" class="px-3.5 py-2 rounded-lg hover:text-amber-700 hover:bg-amber-50 transition-colors {{ request('category') === 'sweet-pickles-murabba' ? 'text-amber-700 bg-amber-50 font-bold' : '' }}">
+                    {{-- <a href="{{ route('shop.category', 'sweet-pickles-murabba') }}" class="px-3.5 py-2 rounded-lg hover:text-amber-700 hover:bg-amber-50 transition-colors {{ request('category') === 'sweet-pickles-murabba' ? 'text-amber-700 bg-amber-50 font-bold' : '' }}">
                         Chunda & Murabba
-                    </a>
+                    </a> --}}
                     <a href="{{ route('about') }}" class="px-3.5 py-2 rounded-lg hover:text-amber-700 hover:bg-amber-50 transition-colors {{ request()->routeIs('about') ? 'text-amber-700 bg-amber-50 font-bold' : '' }}">
                         Our Heritage
                     </a>
@@ -171,9 +180,9 @@
                     <!-- Account / Auth Dropdown -->
                     <div class="relative group">
                         @auth
-                            <button class="flex items-center gap-2 p-2 rounded-xl hover:bg-amber-50 text-slate-700 transition-colors border border-amber-200/60 bg-amber-50/40">
-                                <div class="w-8 h-8 rounded-lg bg-amber-600 text-white font-bold flex items-center justify-center text-xs shadow-sm">
-                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            <button class="flex items-center gap-2 p-1.5 sm:p-2 rounded-xl hover:bg-amber-50 text-slate-700 transition-colors border border-amber-200/60 bg-amber-50/40">
+                                <div class="w-8 h-8 rounded-lg overflow-hidden border border-amber-300 shadow-sm shrink-0 bg-amber-100 flex items-center justify-center">
+                                    <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{{ asset('images/default-avatar.svg') }}'">
                                 </div>
                                 <span class="hidden sm:inline-block text-xs font-semibold text-slate-800 max-w-[90px] truncate">
                                     {{ auth()->user()->name }}
@@ -190,8 +199,11 @@
                                         <i class="fa-solid fa-screwdriver-wrench w-4 text-amber-600"></i> Admin Panel
                                     </a>
                                 @endif
-                                <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-amber-50">
-                                    <i class="fa-solid fa-box-open w-4 text-slate-500"></i> My Orders & Profile
+                                <a href="{{ route('customer.profile') }}" class="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-amber-50 transition-colors">
+                                    <i class="fa-solid fa-user w-4 text-slate-500"></i> Profile
+                                </a>
+                                <a href="{{ route('customer.orders') }}" class="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-amber-50 transition-colors">
+                                    <i class="fa-solid fa-box-open w-4 text-slate-500"></i> My Orders
                                 </a>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf

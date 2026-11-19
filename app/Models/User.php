@@ -17,6 +17,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'google_id',
+        'avatar',
         'password',
         'role',
         'phone',
@@ -41,7 +43,42 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return in_array($this->role, ['admin', 'super_admin']) || $this->email === 'adminram14@achaarg.com';
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin' || $this->email === 'adminram14@achaarg.com';
+    }
+
+    public function hasPermission(string $module): bool
+    {
+        return \App\Services\AdminRoleService::hasPermission($this, $module);
+    }
+
+    public function getRoleTitleAttribute(): string
+    {
+        return \App\Services\AdminRoleService::getRoleTitle($this);
+    }
+
+    public function getIsDeactivatedAttribute(): bool
+    {
+        return \App\Services\AdminRoleService::isDeactivated($this->id);
+    }
+
+    /**
+     * Get the user's avatar URL or default profile image.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if (! empty($this->avatar)) {
+            if (str_starts_with($this->avatar, 'http://') || str_starts_with($this->avatar, 'https://')) {
+                return $this->avatar;
+            }
+            return asset('storage/' . $this->avatar);
+        }
+
+        return asset('images/default-avatar.svg');
     }
 
     public function orders()

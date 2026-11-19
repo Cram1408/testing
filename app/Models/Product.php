@@ -67,6 +67,17 @@ class Product extends Model
         return $default ? ($default->sale_price ?? $default->price) : 0;
     }
 
+    public function getDisplayImageAttribute()
+    {
+        if (!empty($this->image)) {
+            if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+                return $this->image;
+            }
+            return asset($this->image);
+        }
+        return asset('images/products/mango_pickle.png');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

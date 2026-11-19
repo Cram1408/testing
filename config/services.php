@@ -35,4 +35,20 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', env('APP_URL', 'http://localhost:8001') . '/auth/google/callback'),
+    ],
+
+    'firebase' => [
+        'api_key' => env('FIREBASE_API_KEY', 'AIzaSyAQPQMOR2BIyP1Cr60ByJ2YVDz3Kc_dkgM'),
+        'auth_domain' => env('FIREBASE_AUTH_DOMAIN', 'achaarg-8b104.firebaseapp.com'),
+        'project_id' => env('FIREBASE_PROJECT_ID', 'achaarg-8b104'),
+        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET', 'achaarg-8b104.firebasestorage.app'),
+        'messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID', '87337351704'),
+        'app_id' => env('FIREBASE_APP_ID', '1:87337351704:web:4a4f669317f0c516e1216d'),
+        'measurement_id' => env('FIREBASE_MEASUREMENT_ID', 'G-DVNTJC1CRX'),
+    ],
+
 ];

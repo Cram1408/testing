@@ -39,6 +39,7 @@ class OrderController extends Controller
             'shipped' => Order::where('order_status', 'shipped')->count(),
             'delivered' => Order::where('order_status', 'delivered')->count(),
             'cancelled' => Order::where('order_status', 'cancelled')->count(),
+            'returned' => Order::where('order_status', 'returned')->count(),
         ];
 
         return view('admin.orders.index', compact('orders', 'statusCounts'));
@@ -53,20 +54,31 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'order_status' => 'required|in:pending,processing,shipped,delivered,cancelled',
-            'payment_status' => 'required|in:pending,paid,failed',
+            'order_status'    => 'required|in:pending,processing,shipped,delivered,cancelled,returned',
+            'payment_status'  => 'required|in:pending,paid,failed,refunded',
             'tracking_number' => 'nullable|string|max:100',
-            'courier_name' => 'nullable|string|max:100',
+            'courier_name'    => 'nullable|string|max:100',
+            'notes'           => 'nullable|string|max:1000',
         ]);
 
+        // If order status is being transitioned to cancelled/returned and restock requested
+        $previousStatus = $order->order_status;
         $order->update($validated);
 
-        return back()->with('success', "Order #{$order->order_number} status updated to " . ucfirst($order->order_status) . ".");
+        if ($request->boolean('restock_items') && in_array($validated['order_status'], ['cancelled', 'returned']) && !in_array($previousStatus, ['cancelled', 'returned'])) {
+            foreach ($order->items as $item) {
+                if ($item->variant) {
+                    $item->variant->increment('stock_quantity', $item->quantity);
+                }
+            }
+        }
+
+        return back()->with('success', "Order #{$order->order_number} status updated successfully.");
     }
 
     public function invoice(Order $order)
     {
         $order->load(['items.product', 'items.variant', 'user']);
-        return view('admin.orders.invoice', compact('order'));
+        return view('orders.invoice', compact('order'));
     }
 }

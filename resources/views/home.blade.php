@@ -172,7 +172,7 @@
 
                     <!-- Image -->
                     <a href="{{ route('shop.show', $product->slug) }}" class="block w-full h-52 rounded-2xl overflow-hidden bg-amber-50 mb-4 relative">
-                        <img src="{{ asset($product->image ?? 'images/products/mango_pickle.png') }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ asset($product->image ?? 'images/products/mango_pickle.png') }}" onerror="this.onerror=null;this.src='{{ asset('images/products/mango_pickle.png') }}';" alt="{{ $product->name }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </a>
 
                     <!-- Title & Tagline -->
